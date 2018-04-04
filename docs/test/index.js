@@ -1,6 +1,7 @@
 /* globals BABYLON */
 'use strict';
 
+var constants = require('../../src/lib/constants')
 
 /** 
  * Testbed.
@@ -40,12 +41,14 @@ var noa = noaEngine(opts)
 var brownish = [0.45, 0.36, 0.22]
 var greenish = [0.1, 0.8, 0.2]
 noa.registry.registerMaterial('grass', greenish, null)
-noa.registry.registerMaterial('dirt', brownish, null, false)
+noa.registry.registerMaterial('dirt', brownish, null)
 var strs = ['a', 'b', 'c', 'd', '1', '2']
 for (var i = 0; i < 6; i++) {
 	var s = strs[i]
 	noa.registry.registerMaterial(s, null, s + '.png')
-	noa.registry.registerMaterial('t' + s, null, 't' + s + '.png', true)
+	noa.registry.registerMaterial('t' + s, null, 't' + s + '.png', null, {
+		transparency: constants.ALPHA_TEST
+	})
 }
 noa.registry.registerMaterial('water', [0.5, 0.5, 0.8, 0.7], null)
 
@@ -55,7 +58,7 @@ var shinyMat = noa.rendering.makeStandardMaterial('shinyDirtMat')
 shinyMat.specularColor.copyFromFloats(1, 1, 1)
 shinyMat.specularPower = 32
 shinyMat.bumpTexture = new BABYLON.Texture('textures/stone.png', scene);
-noa.registry.registerMaterial('shinyDirt', brownish, null, false, shinyMat)
+noa.registry.registerMaterial('shinyDirt', brownish, null, shinyMat)
 
 
 // object block mesh

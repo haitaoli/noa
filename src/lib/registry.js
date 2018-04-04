@@ -182,7 +182,7 @@ function Registry(noa, _options) {
      * @param renderMaterial an optional BABYLON material to be used for block faces with this block material
     */
 
-    this.registerMaterial = function (name, color, textureURL, texHasAlpha, renderMaterial) {
+    this.registerMaterial = function (name, color, textureURL, renderMaterial, opts) {
         // console.log('register mat: ', name, color, textureURL)
         var id = matIDs[name] || matData.length
         matIDs[name] = id
@@ -190,12 +190,16 @@ function Registry(noa, _options) {
         if (color && color.length == 4) {
             alpha = color.pop()
         }
+
+        opts = opts || {}
+
         matData[id] = {
             color: color || [1, 1, 1],
             alpha: alpha,
             texture: textureURL ? texturePath + textureURL : '',
-            textureAlpha: !!texHasAlpha,
             renderMat: renderMaterial || null,
+            transparency: opts.transparency,
+            backFaceCulling: opts.backFaceCulling,
         }
         return id
     }

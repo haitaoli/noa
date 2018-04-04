@@ -1,7 +1,6 @@
 'use strict'
 
-
-
+var constants = require('constants')
 
 var mesher
 module.exports = new TerrainMesher()
@@ -318,8 +317,17 @@ function MeshBuilder() {
         if (url) {
             var scene = noa.rendering.getScene()
             var tex = new BABYLON.Texture(url, scene, true, false, BABYLON.Texture.NEAREST_SAMPLINGMODE)
-            if (matData.textureAlpha) tex.hasAlpha = true
+
+            if (matData.transparancy === constants.ALPHA_BLEND) {
+                mat.opacityTexture = tex
+            } else if (matData.transparancy === constants.ALPHA_TEST) {
+                tex.hasAlpha = true
+            }
             mat.diffuseTexture = tex
+
+            if (matData.backFaceCulling === false) {
+                mat.backFaceCulling = false
+            }
         }
         if (matData.alpha < 1) {
             mat.alpha = matData.alpha
